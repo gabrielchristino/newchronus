@@ -13,9 +13,13 @@ uint8_t currentMenu = 0;
 uint8_t currentSubMenu = 0;
 bool inSubMenu = 0;
 
+char* ultimoArquivo1;
+char* ultimoArquivo2;
+char* ultimoArquivo3;
+
 void initScreen()
 {
-    SPIFFS.begin();
+    SPIFFS.begin(true);
 
     pinMode(5, OUTPUT);
     digitalWrite(5, HIGH); // liga tela
@@ -30,13 +34,13 @@ void initScreen()
     // delay(100);
     // tft.fillScreen(ST77XX_BLACK);
     // delay(100);
-    tft.enableDisplay(false);
+    // tft.enableDisplay(false);
 }
 
 void showTime()
 {
-    tft.enableDisplay(false);
-    tft.fillScreen(ST77XX_BLACK);
+    // tft.enableDisplay(false);
+    // tft.fillScreen(ST77XX_BLACK);
 
     tft.setTextColor(0xef5d);
     tft.setFont(&FreeSans24pt7b);
@@ -92,23 +96,27 @@ void turnOff()
 
 void displayMenu(String valor, char* arquivo1, char* arquivo2, char* arquivo3)
 {
-    tft.enableDisplay(false);
-    tft.fillScreen(0xf79b);
-    // tft.setTextColor(0xef5d);
+    // tft.enableDisplay(false);
+    // tft.fillScreen(0xf79b);
+    tft.fillRect(0, 50, 160, 50, 0xf79b);
     tft.setTextColor(0x73ad);
     tft.setFont(&FreeSans9pt7b);
 
-    int16_t x1, y1 = 0;
-    uint16_t w, h = 0;
+    int16_t x1, y1;
+    uint16_t w, h;
     tft.getTextBounds(valor, 0, 0, &x1, &y1, &w, &h); // Calculate w/h of text
     uint8_t x = (160 - w) / 2;
     uint8_t y = (87 - h);
 
     tft.setCursor(x, y);
     tft.println(valor);
-    if (arquivo1) drawImage(arquivo1, -15, 5);
-    if (arquivo2) drawImage(arquivo2, 58, 5);
-    if (arquivo3) drawImage(arquivo3, 131, 5);
+    if(ultimoArquivo1 != arquivo1) if (arquivo1 != "") {drawImage(arquivo1, -15, 5);} else {tft.fillRect(0, 5, 29, 44, 0xf79b);}
+    if(ultimoArquivo2 != arquivo2) if (arquivo2 != "") {drawImage(arquivo2, 58, 5);} else {tft.fillRect(58, 5, 44, 44, 0xf79b);}
+    if(ultimoArquivo3 != arquivo3) if (arquivo3 != "") {drawImage(arquivo3, 131, 5);} else {tft.fillRect(131, 5, 29, 44, 0xf79b);}
+
+    ultimoArquivo1 = arquivo1;
+    ultimoArquivo2 = arquivo2;
+    ultimoArquivo3 = arquivo3;
     tft.enableDisplay(true);
     // screenTime();
 }
@@ -129,3 +137,8 @@ void drawImage(char* arquivo, int16_t x, int16_t y)
 {
   reader.drawBMP(arquivo, tft, x, y);
 } 
+
+void clearScreen()
+{
+    tft.fillScreen(0xf79b);
+}

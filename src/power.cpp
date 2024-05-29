@@ -23,8 +23,8 @@ void wakeUpReason()
         //Serial.print("Wakeup caused by touchpad");
         //Serial.println(touchPin);
         if (touchPin == 0) showTime();    // ok
-        if (touchPin == 5) moveMenu(0); // down
-        if (touchPin == 9) moveMenu(0); // up
+        if (touchPin == 5) {clearScreen(); moveMenu(0);} // down
+        if (touchPin == 9) {clearScreen(); moveMenu(0);} // up
         break;
     default:
         setTimeDate();
