@@ -17,6 +17,7 @@
 
 void initScreen();
 void showTime();
+void showCalendar();
 void screenTime();
 void showColor();
 void turnOff();

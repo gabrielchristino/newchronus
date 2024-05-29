@@ -2,10 +2,10 @@
 #include <screen.h>
 #include <clock.h>
 
-const uint8_t menuSize = 14;
+const uint8_t menuSize = 15;
 
 void (*menuFunc[menuSize][4])(void) = {
-    {[]{moveMenu(12);},[]{moveMenu(13);},[]{returnTime(); returnDate(); moveMenu(1);}, []{displayMenu("Settings", "/power.bmp", "/settings.bmp", "/clock.bmp");}},
+    {[]{moveMenu(12);},[]{moveMenu(menuSize - 1);},[]{returnTime(); returnDate(); moveMenu(1);}, []{displayMenu("Settings", "/power.bmp", "/settings.bmp", "/clock.bmp");}},
 
     {[]{moveMenu(2);},[]{moveMenu(3);},[]{returnTime(); returnDate(); moveMenu(4);}, []{displayMenu("Set Time", "/back.bmp", "/clock.bmp", "/calendar.bmp");}},
     {[]{moveMenu(3);},[]{moveMenu(1);},[]{returnTime(); returnDate(); moveMenu(8);}, []{displayMenu("Set date", "/clock.bmp", "/calendar.bmp", "/back.bmp");}},
@@ -21,7 +21,8 @@ void (*menuFunc[menuSize][4])(void) = {
     {[]{setDia(1);callFunc(3);},[]{setDia(-1);callFunc(3);},[]{moveMenu(11);}, []{displayMenu("Day " + getDia(), "", "/calendar.bmp", "/save.bmp");}},
     {[]{},[]{},[]{setTimeDate(); moveMenu(2);}, []{displayMenu("Save", "", "/save.bmp", "");}},
 
-    {[]{moveMenu(13);},[]{moveMenu(0);},[]{showTime();}, []{displayMenu("Time", "/settings.bmp", "/clock.bmp", "/power.bmp");}},
+    {[]{moveMenu(13);},[]{moveMenu(0);},[]{showTime();}, []{displayMenu("Time", "/settings.bmp", "/clock.bmp", "/calendar.bmp");}},
+    {[]{moveMenu(14);},[]{moveMenu(12);},[]{showCalendar();}, []{displayMenu("Calendar", "/clock.bmp", "/calendar.bmp", "/power.bmp");}},
 
-    {[]{moveMenu(0);},[]{moveMenu(12);},[]{turnOff();}, []{displayMenu("Sleep", "/clock.bmp", "/power.bmp", "/settings.bmp");}},
+    {[]{moveMenu(0);},[]{moveMenu(13);},[]{turnOff();}, []{displayMenu("Sleep", "/calendar.bmp", "/power.bmp", "/settings.bmp");}},
 };

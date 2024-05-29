@@ -13,9 +13,9 @@ uint8_t currentMenu = 0;
 uint8_t currentSubMenu = 0;
 bool inSubMenu = 0;
 
-char* ultimoArquivo1;
-char* ultimoArquivo2;
-char* ultimoArquivo3;
+char *ultimoArquivo1;
+char *ultimoArquivo2;
+char *ultimoArquivo3;
 
 void initScreen()
 {
@@ -94,7 +94,7 @@ void turnOff()
     goToSleep();
 }
 
-void displayMenu(String valor, char* arquivo1, char* arquivo2, char* arquivo3)
+void displayMenu(String valor, char *arquivo1, char *arquivo2, char *arquivo3)
 {
     // tft.enableDisplay(false);
     // tft.fillScreen(0xf79b);
@@ -110,9 +110,33 @@ void displayMenu(String valor, char* arquivo1, char* arquivo2, char* arquivo3)
 
     tft.setCursor(x, y);
     tft.println(valor);
-    if(ultimoArquivo1 != arquivo1) if (arquivo1 != "") {drawImage(arquivo1, -15, 5);} else {tft.fillRect(0, 5, 29, 44, 0xf79b);}
-    if(ultimoArquivo2 != arquivo2) if (arquivo2 != "") {drawImage(arquivo2, 58, 5);} else {tft.fillRect(58, 5, 44, 44, 0xf79b);}
-    if(ultimoArquivo3 != arquivo3) if (arquivo3 != "") {drawImage(arquivo3, 131, 5);} else {tft.fillRect(131, 5, 29, 44, 0xf79b);}
+    if (ultimoArquivo1 != arquivo1)
+        if (arquivo1 != "")
+        {
+            drawImage(arquivo1, -15, 5);
+        }
+        else
+        {
+            tft.fillRect(0, 5, 29, 44, 0xf79b);
+        }
+    if (ultimoArquivo2 != arquivo2)
+        if (arquivo2 != "")
+        {
+            drawImage(arquivo2, 58, 5);
+        }
+        else
+        {
+            tft.fillRect(58, 5, 44, 44, 0xf79b);
+        }
+    if (ultimoArquivo3 != arquivo3)
+        if (arquivo3 != "")
+        {
+            drawImage(arquivo3, 131, 5);
+        }
+        else
+        {
+            tft.fillRect(131, 5, 29, 44, 0xf79b);
+        }
 
     ultimoArquivo1 = arquivo1;
     ultimoArquivo2 = arquivo2;
@@ -133,12 +157,45 @@ void callFunc(uint8_t i)
     (*menuFunc[currentMenu][i])();
 }
 
-void drawImage(char* arquivo, int16_t x, int16_t y)
+void drawImage(char *arquivo, int16_t x, int16_t y)
 {
-  reader.drawBMP(arquivo, tft, x, y);
-} 
+    reader.drawBMP(arquivo, tft, x, y);
+}
 
 void clearScreen()
 {
     tft.fillScreen(0xf79b);
+}
+
+void showCalendar()
+{
+    clearScreen();
+    tft.setFont(&FreeSans9pt7b);
+    // Display the month and year
+    // char monthStr[4];
+    // sprintf(monthStr, "%s", getMes());
+    // tft.setCursor(10, 10);
+    // tft.print(monthStr);
+    // tft.print(" ");
+    // tft.print(getAno());
+
+    // Display the calendar grid
+    int x = 4;
+    int y = 11;
+    for (int i = 1; i <= getDia().toInt(); i++)
+    {
+        tft.setCursor(x, y);
+        tft.print(i);
+        x += 20;
+        if (x > 140)
+        {
+            x = 20;
+            y += 15;
+        }
+    }
+
+    // Update the display
+    tft.enableDisplay(true);
+
+    screenTime();
 }
