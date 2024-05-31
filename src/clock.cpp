@@ -53,23 +53,11 @@ void setDia(int8_t valor)
 
 int8_t diasNoMes(uint8_t month, uint16_t year)
 {
-    if (month == 2)
-    {
-        if (isBissexto(year))
-        {
-            return 29;
-        }
-        else
-        {
-            return 28;
-        }
-    }
-    else if (month == 4 || month == 6 || month == 9 || month == 11)
-    {
+    if (month == 2) {
+        return isBissexto(year) ? 29 : 28;
+    } else if (month == 4 || month == 6 || month == 9 || month == 11) {
         return 30;
-    }
-    else
-    {
+    } else {
         return 31;
     }
 }
