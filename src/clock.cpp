@@ -11,7 +11,8 @@ void setTimeDate()
 void setHora(int8_t valor)
 {
     hora += valor;
-    hora = hora == 255 ? 23 : hora > 23 ? 0 : hora;
+    hora = hora == 255 ? 23 : hora > 23 ? 0
+                                        : hora;
 }
 
 String getHora() { return String(hora); }
@@ -19,7 +20,8 @@ String getHora() { return String(hora); }
 void setMinuto(int8_t valor)
 {
     minuto += valor;
-    minuto = minuto == 255 ? 59 : minuto > 59 ? 0 : minuto;
+    minuto = minuto == 255 ? 59 : minuto > 59 ? 0
+                                              : minuto;
 }
 
 String getMinuto() { return String(minuto); }
@@ -33,7 +35,28 @@ String getSegundo() { return String(segundo); }
 
 uint16_t isBissexto(uint16_t ano)
 {
-    return (ano % 4 == 0 && ano % 100 != 0) || (ano % 400 == 0);
+    if (ano % 4 == 0)
+    {
+        if (ano % 100 == 0)
+        {
+            if (ano % 400 == 0)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return true;
+        }
+    }
+    else
+    {
+        return false;
+    }
 }
 
 void setDia(int8_t valor)
@@ -45,7 +68,31 @@ void setDia(int8_t valor)
         diasNoMes = 30;
 
     dia += valor;
-    dia = dia == 255 ? diasNoMes : dia > diasNoMes ? 0 : dia;
+    dia = dia == 255 ? diasNoMes : dia > diasNoMes ? 0
+                                                   : dia;
+}
+
+int8_t diasNoMes(uint8_t month, uint16_t year)
+{
+    if (month == 2)
+    {
+        if (isBissexto(year))
+        {
+            return 29;
+        }
+        else
+        {
+            return 28;
+        }
+    }
+    else if (month == 4 || month == 6 || month == 9 || month == 11)
+    {
+        return 30;
+    }
+    else
+    {
+        return 31;
+    }
 }
 
 String getDia() { return String(dia); }
@@ -53,7 +100,8 @@ String getDia() { return String(dia); }
 void setMes(int8_t valor)
 {
     mes += valor;
-    mes = mes > 12 ? 0 : mes == -1 ? 12 : mes;
+    mes = mes > 12 ? 0 : mes == -1 ? 12
+                                   : mes;
 }
 
 String getMes() { return String(mes); }
@@ -79,4 +127,22 @@ String returnDate()
     mes = rtc.getTime("%m").toInt();
     ano = rtc.getTime("%Y").toInt();
     return rtc.getTime("%a, %e %b");
+}
+
+uint8_t getPrimeiroDiaMes(uint8_t month, uint16_t year)
+{
+    int t = (year - 1900) * 365;
+    for (int i = 1900; i < year; i++)
+    {
+        if (isBissexto(i))
+        {
+            t++;
+        }
+    }
+    for (int i = 1; i < month; i++)
+    {
+        t += diasNoMes(i, year);
+    }
+
+    return (t + 1) % 7;
 }

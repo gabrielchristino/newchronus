@@ -17,14 +17,23 @@ void wakeUpReason()
     switch (wakeup_reason)
     {
     case ESP_SLEEP_WAKEUP_TIMER:
-        //Serial.println("Wakeup caused by timer");
+        // Serial.println("Wakeup caused by timer");
         break;
     case ESP_SLEEP_WAKEUP_TOUCHPAD:
-        //Serial.print("Wakeup caused by touchpad");
-        //Serial.println(touchPin);
-        if (touchPin == 0) showTime();    // ok
-        if (touchPin == 5) {clearScreen(); moveMenu(0);} // down
-        if (touchPin == 9) {clearScreen(); moveMenu(0);} // up
+        // Serial.print("Wakeup caused by touchpad");
+        // Serial.println(touchPin);
+        if (touchPin == 0)
+            showTime(); // ok
+        if (touchPin == 5)
+        {
+            clearScreen();
+            moveMenu(0);
+        } // down
+        if (touchPin == 9)
+        {
+            clearScreen();
+            moveMenu(0);
+        } // up
         break;
     default:
         setTimeDate();
@@ -45,6 +54,6 @@ void setSleepMode()
 
 void goToSleep()
 {
-    //Serial.println("bye");
+    // Serial.println("bye");
     esp_deep_sleep_start();
 }

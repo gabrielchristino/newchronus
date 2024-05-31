@@ -2,6 +2,7 @@
 #include <Adafruit_ST7735.h> // Hardware-specific library for ST7735
 #include <Fonts/FreeSans24pt7b.h>
 #include <Fonts/FreeSans9pt7b.h>
+#include <Fonts/FreeMono9pt7b.h>
 
 #include <SPI.h>
 
@@ -14,15 +15,17 @@
 #define TFT_MOSI 17
 #define TFT_SCLK 16
 
-
 void initScreen();
 void showTime();
 void showCalendar();
-void screenTime();
+void setScreenTimeOut(int8_t valor);
+String getScreenTimeOut();
+void screenTimeOut();
+void resetTimer();
 void showColor();
 void turnOff();
-void displayMenu(String valor, char* arquivo1, char* arquivo2, char* arquivo3);
+void displayMenu(String valor, char *arquivo1, char *arquivo2, char *arquivo3);
 void moveMenu(uint8_t nivel);
 void callFunc(uint8_t i);
-void drawImage(char* arquivo, int16_t x, int16_t y);
+void drawImage(char *arquivo, int16_t x, int16_t y);
 void clearScreen();

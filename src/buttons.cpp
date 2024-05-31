@@ -37,12 +37,9 @@ void initButtons()
 void readButtons()
 {
     btnUp.click([]
-                {
-                    callFunc(0); });
+                { resetTimer(); callFunc(0); });
     btnDown.click([]
-                  {
-                    callFunc(1); });
+                  { resetTimer(); callFunc(1); });
     btnOk.click([]
-                {
-                    callFunc(2); });
+                { resetTimer(); callFunc(2); });
 }

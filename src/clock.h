@@ -15,3 +15,6 @@ void setAno(int8_t valor);
 String getAno();
 String returnTime();
 String returnDate();
+int8_t diasNoMes(uint8_t month, uint16_t year);
+uint16_t isBissexto(uint16_t ano);
+uint8_t getPrimeiroDiaMes(uint8_t month, uint16_t year);

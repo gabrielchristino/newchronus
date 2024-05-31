@@ -2,12 +2,13 @@
 #include "power.h"
 #include "clock.h"
 #include "apps.h"
+#include "configs.h"
 
 Adafruit_ST7735 tft = Adafruit_ST7735(TFT_CS, TFT_DC, TFT_MOSI, TFT_SCLK, TFT_RST);
 SPIFFS_ImageReader reader;
 
-int currentTime = millis();
-int startTime = 0;
+uint8_t screenTimeValue = 0;
+unsigned long previousMillis = 0;
 
 uint8_t currentMenu = 0;
 uint8_t currentSubMenu = 0;
@@ -29,19 +30,13 @@ void initScreen()
 
     tft.setRotation(1);
     tft.cp437(true);
-    // tft.enableDisplay(true);
-    // tft.fillScreen(ST77XX_WHITE);
-    // delay(100);
-    // tft.fillScreen(ST77XX_BLACK);
-    // delay(100);
-    // tft.enableDisplay(false);
+
+    screenTimeValue = getConfig("screenTimeout").toInt();
+    Serial.println("inicio " + String(screenTimeValue));
 }
 
 void showTime()
 {
-    // tft.enableDisplay(false);
-    // tft.fillScreen(ST77XX_BLACK);
-
     tft.setTextColor(0xef5d);
     tft.setFont(&FreeSans24pt7b);
     tft.setTextWrap(true);
@@ -61,22 +56,32 @@ void showTime()
     tft.setCursor(x, y);
     tft.println(returnDate());
     tft.enableDisplay(true);
-    screenTime();
 }
 
-void screenTime()
+void setScreenTimeOut(int8_t valor)
 {
-    currentTime = millis();
-    startTime = currentTime;
-    while (true)
-    {
-        currentTime = millis();
-        if (currentTime - startTime > 5000)
-        {
-            turnOff();
-            break;
-        }
-    }
+    screenTimeValue+=valor;
+    if(screenTimeValue<5) screenTimeValue=5;
+    if(screenTimeValue>60) screenTimeValue=60;
+}
+
+String getScreenTimeOut()
+{
+    return String(screenTimeValue);
+}
+
+void screenTimeOut()
+{
+  unsigned long currentMillis = millis();
+  if (currentMillis - previousMillis >= getScreenTimeOut().toInt() * 1000) {
+    turnOff();
+    previousMillis = currentMillis;
+  }
+}
+
+void resetTimer()
+{
+    previousMillis = millis();
 }
 
 void showColor()
@@ -96,8 +101,6 @@ void turnOff()
 
 void displayMenu(String valor, char *arquivo1, char *arquivo2, char *arquivo3)
 {
-    // tft.enableDisplay(false);
-    // tft.fillScreen(0xf79b);
     tft.fillRect(0, 50, 160, 50, 0xf79b);
     tft.setTextColor(0x73ad);
     tft.setFont(&FreeSans9pt7b);
@@ -142,7 +145,6 @@ void displayMenu(String valor, char *arquivo1, char *arquivo2, char *arquivo3)
     ultimoArquivo2 = arquivo2;
     ultimoArquivo3 = arquivo3;
     tft.enableDisplay(true);
-    // screenTime();
 }
 
 void moveMenu(uint8_t nivel)
@@ -170,32 +172,36 @@ void clearScreen()
 void showCalendar()
 {
     clearScreen();
-    tft.setFont(&FreeSans9pt7b);
-    // Display the month and year
-    // char monthStr[4];
-    // sprintf(monthStr, "%s", getMes());
-    // tft.setCursor(10, 10);
-    // tft.print(monthStr);
-    // tft.print(" ");
-    // tft.print(getAno());
+    tft.setTextColor(ST7735_BLACK);
+    tft.setFont(&FreeMono9pt7b);
 
-    // Display the calendar grid
     int x = 4;
-    int y = 11;
-    for (int i = 1; i <= getDia().toInt(); i++)
+    int y = 13;
+    String weekDays[7] = {"D", "S", "T", "Q", "Q", "S", "S"};
+    for (int i = 1; i <= 7; i++)
     {
-        tft.setCursor(x, y);
-        tft.print(i);
-        x += 20;
-        if (x > 140)
-        {
-            x = 20;
-            y += 15;
-        }
+        tft.setCursor(x + 5, y);
+        tft.print(weekDays[i - 1]);
+        x += 22;
     }
 
-    // Update the display
-    tft.enableDisplay(true);
+    x = 4 + getPrimeiroDiaMes(getMes().toInt(), getAno().toInt()) * 22;
+    y += 13;
 
-    screenTime();
+    for (int i = 1; i <= diasNoMes(getMes().toInt(), getAno().toInt()); i++)
+    {
+        tft.setTextColor(0x73ad);
+        if (i == getDia().toInt())
+            tft.setTextColor(0xec10);
+        tft.setCursor(i < 10 ? x + 5 : x, y); // adjust for single digit days
+        tft.print(i);
+        x += 22;
+        if (x > 140)
+        {
+            x = 4;
+            y += 13;
+        }
+    }
+    
+    tft.enableDisplay(true);
 }
