@@ -4,8 +4,8 @@
 void updateCodeOta()
 {
   #ifdef OTA_ENABLED
-    const char *ssid = "gtchris100";
-    const char *password = "carsled100";
+    const char *ssid = "foo";
+    const char *password = "bar";
     WiFi.mode(WIFI_STA);
     WiFi.begin(ssid, password);
     while (WiFi.waitForConnectResult() != WL_CONNECTED)
