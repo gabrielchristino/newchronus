@@ -1,6 +1,10 @@
 #include <configs.h>
 #define CONFIG_FILE "/config.txt"
 
+void initSPIFFS()
+{
+  SPIFFS.begin(true);
+}
 
 String searchForKey(File file, String key) {
   String line;

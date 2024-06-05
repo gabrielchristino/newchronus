@@ -1,1 +1,3 @@
 screenTimeout:10
+ssid:foo
+passwd:bar

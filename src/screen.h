@@ -17,7 +17,7 @@
 
 void initScreen();
 void showTime();
-void showCalendar();
+void showCalendar(uint8_t mover);
 void setScreenTimeOut(int8_t valor);
 String getScreenTimeOut();
 void screenTimeOut();

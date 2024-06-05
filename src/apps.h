@@ -3,7 +3,7 @@
 #include "clock.h"
 #include "configs.h"
 
-const uint8_t menuSize = 17;
+const uint8_t menuSize = 18;
 
 void (*menuFunc[menuSize][4])(void) = {
     /*0*/{[]{moveMenu(14);},[]{moveMenu(menuSize - 1);},[]{returnTime(); returnDate(); moveMenu(1);}, []{displayMenu("Settings", "/power.bmp", "/settings.bmp", "/clock.bmp");}},
@@ -26,7 +26,10 @@ void (*menuFunc[menuSize][4])(void) = {
     /*13*/{[]{setScreenTimeOut(1);callFunc(3);},[]{setScreenTimeOut(-1);callFunc(3);},[]{saveConfig("screenTimeout", getScreenTimeOut());moveMenu(3);}, []{displayMenu("Timeout " + getScreenTimeOut() + "s", "", "/sleep.bmp", "");}},
 
     /*14*/{[]{moveMenu(15);},[]{moveMenu(0);},[]{showTime();}, []{displayMenu("Time", "/settings.bmp", "/clock.bmp", "/calendar.bmp");}},
-    /*15*/{[]{moveMenu(16);},[]{moveMenu(14);},[]{showCalendar();}, []{displayMenu("Calendar", "/clock.bmp", "/calendar.bmp", "/power.bmp");}},
+    /*15*/{[]{moveMenu(16);},[]{moveMenu(14);},[]{moveMenu(17);callFunc(3);}, []{displayMenu("Calendar", "/clock.bmp", "/calendar.bmp", "/power.bmp");}},
 
     /*16*/{[]{moveMenu(0);},[]{moveMenu(15);},[]{turnOff();}, []{displayMenu("Sleep", "/calendar.bmp", "/power.bmp", "/settings.bmp");}},
+
+    /*17*/{[]{showCalendar(1);},[]{showCalendar(-1);},[]{clearScreen();moveMenu(15);}, []{displayMenu("", "", "", "");showCalendar(0);}},
+
 };

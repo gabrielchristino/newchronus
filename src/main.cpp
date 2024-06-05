@@ -3,19 +3,20 @@
 #include "screen.h"
 #include "buttons.h"
 #include "power.h"
-#include "clock.h"
+#include "ota.h"
 
 void setup()
 {
-  Serial.begin(115200);
+  #ifdef SERIAL_ENABLED
+    Serial.begin(115200);
+  #endif
 
-  initScreen();
   wakeUpReason();
-  initButtons();
 }
 
 void loop()
 {
   readButtons();
   screenTimeOut();
+  otaHandle();
 }

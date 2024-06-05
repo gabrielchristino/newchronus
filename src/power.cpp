@@ -1,6 +1,9 @@
 #include "power.h"
 #include "clock.h"
 #include "screen.h"
+#include "buttons.h"
+#include "configs.h"
+#include "ota.h"
 
 #define uS_TO_S_FACTOR 1000000ULL  /* Conversion factor for micro seconds to seconds */
 #define TIME_TO_SLEEP 60 * 60 * 24 /* Time ESP32 will go to sleep (in seconds) */
@@ -11,6 +14,11 @@ esp_sleep_wakeup_cause_t wakeup_reason;
 
 void wakeUpReason()
 {
+
+  initSPIFFS();
+
+  initScreen();
+
     touchPin = esp_sleep_get_touchpad_wakeup_status();
 
     wakeup_reason = esp_sleep_get_wakeup_cause();
@@ -22,19 +30,19 @@ void wakeUpReason()
     case ESP_SLEEP_WAKEUP_TOUCHPAD:
         // Serial.print("Wakeup caused by touchpad");
         // Serial.println(touchPin);
-        if (touchPin == 0)
-            showTime(); // ok
-        if (touchPin == 5)
+        if (touchPin == 0 /*ok*/)
         {
+            showTime();
+            break;
+        }
+        if (touchPin == 5 /*down*/ || touchPin == 9 /*up*/)
+        {
+            initButtons();
+            updateCodeOta();
             clearScreen();
             moveMenu(0);
-        } // down
-        if (touchPin == 9)
-        {
-            clearScreen();
-            moveMenu(0);
-        } // up
-        break;
+            break;
+        }
     default:
         setTimeDate();
         setSleepMode();

@@ -18,10 +18,11 @@ char *ultimoArquivo1;
 char *ultimoArquivo2;
 char *ultimoArquivo3;
 
+uint8_t mesSelecionado = getMes().toInt();
+uint8_t anoSelecionado = getAno().toInt();
+
 void initScreen()
 {
-    SPIFFS.begin(true);
-
     pinMode(5, OUTPUT);
     digitalWrite(5, HIGH); // liga tela
 
@@ -32,7 +33,9 @@ void initScreen()
     tft.cp437(true);
 
     screenTimeValue = getConfig("screenTimeout").toInt();
-    Serial.println("inicio " + String(screenTimeValue));
+    #ifdef SERIAL_ENABLED 
+        Serial.println("inicio " + String(screenTimeValue));
+    #endif
 }
 
 void showTime()
@@ -169,8 +172,19 @@ void clearScreen()
     tft.fillScreen(0xf79b);
 }
 
-void showCalendar()
+void showCalendar(uint8_t mover)
 {
+    mesSelecionado+=mover;    
+    if(mesSelecionado > 12)
+    {
+        mesSelecionado = 1;
+        anoSelecionado+=1;
+    }
+    if(mesSelecionado < 1)
+    {
+        mesSelecionado = 12;
+        anoSelecionado-=1;
+    }
     clearScreen();
     tft.setTextColor(ST7735_BLACK);
     tft.setFont(&FreeMono9pt7b);
@@ -185,10 +199,10 @@ void showCalendar()
         x += 22;
     }
 
-    x = 4 + getPrimeiroDiaMes(getMes().toInt(), getAno().toInt()) * 22;
+    x = 4 + getPrimeiroDiaMes(mesSelecionado, getAno().toInt()) * 22;
     y += 13;
 
-    for (int i = 1; i <= diasNoMes(getMes().toInt(), getAno().toInt()); i++)
+    for (int i = 1; i <= diasNoMes(mesSelecionado, getAno().toInt()); i++)
     {
         tft.setTextColor(0x73ad);
         if (i == getDia().toInt())
