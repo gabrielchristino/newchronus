@@ -15,9 +15,9 @@ esp_sleep_wakeup_cause_t wakeup_reason;
 void wakeUpReason()
 {
 
-  initSPIFFS();
+    initSPIFFS();
 
-  initScreen();
+    initScreen();
 
     touchPin = esp_sleep_get_touchpad_wakeup_status();
 

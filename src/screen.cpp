@@ -33,9 +33,9 @@ void initScreen()
     tft.cp437(true);
 
     screenTimeValue = getConfig("screenTimeout").toInt();
-    #ifdef SERIAL_ENABLED 
-        Serial.println("inicio " + String(screenTimeValue));
-    #endif
+#ifdef SERIAL_ENABLED
+    Serial.println("inicio " + String(screenTimeValue));
+#endif
 }
 
 void showTime()
@@ -63,9 +63,11 @@ void showTime()
 
 void setScreenTimeOut(int8_t valor)
 {
-    screenTimeValue+=valor;
-    if(screenTimeValue<5) screenTimeValue=5;
-    if(screenTimeValue>60) screenTimeValue=60;
+    screenTimeValue += valor;
+    if (screenTimeValue < 5)
+        screenTimeValue = 5;
+    if (screenTimeValue > 60)
+        screenTimeValue = 60;
 }
 
 String getScreenTimeOut()
@@ -75,11 +77,12 @@ String getScreenTimeOut()
 
 void screenTimeOut()
 {
-  unsigned long currentMillis = millis();
-  if (currentMillis - previousMillis >= getScreenTimeOut().toInt() * 1000) {
-    turnOff();
-    previousMillis = currentMillis;
-  }
+    unsigned long currentMillis = millis();
+    if (currentMillis - previousMillis >= getScreenTimeOut().toInt() * 1000)
+    {
+        turnOff();
+        previousMillis = currentMillis;
+    }
 }
 
 void resetTimer()
@@ -174,16 +177,16 @@ void clearScreen()
 
 void showCalendar(uint8_t mover)
 {
-    mesSelecionado+=mover;    
-    if(mesSelecionado > 12)
+    mesSelecionado += mover;
+    if (mesSelecionado > 12)
     {
         mesSelecionado = 1;
-        anoSelecionado+=1;
+        anoSelecionado += 1;
     }
-    if(mesSelecionado < 1)
+    if (mesSelecionado < 1)
     {
         mesSelecionado = 12;
-        anoSelecionado-=1;
+        anoSelecionado -= 1;
     }
     clearScreen();
     tft.setTextColor(ST7735_BLACK);
@@ -216,6 +219,6 @@ void showCalendar(uint8_t mover)
             y += 13;
         }
     }
-    
+
     tft.enableDisplay(true);
 }
