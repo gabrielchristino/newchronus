@@ -18,6 +18,8 @@ void wakeUpReason()
     initSPIFFS();
 
     initScreen();
+    
+    updateCodeOta();
 
     touchPin = esp_sleep_get_touchpad_wakeup_status();
 
@@ -38,7 +40,6 @@ void wakeUpReason()
         if (touchPin == 5 /*down*/ || touchPin == 9 /*up*/)
         {
             initButtons();
-            updateCodeOta();
             clearScreen();
             moveMenu(0);
             break;
@@ -62,6 +63,8 @@ void setSleepMode()
 
 void goToSleep()
 {
-    // Serial.println("bye");
+    #ifdef SERIAL_ENABLED
+        Serial.println("bye");
+    #endif
     esp_deep_sleep_start();
 }

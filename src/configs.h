@@ -1,8 +1,8 @@
 #include <Arduino.h>
 #include <SPIFFS.h>
 
-// #define OTA_ENABLED
-// #define SERIAL_ENABLED
+#define OTA_ENABLED true
+#define SERIAL_ENABLED true
 
 void initSPIFFS();
 String searchForKey(File file, String key);

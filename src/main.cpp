@@ -4,6 +4,7 @@
 #include "buttons.h"
 #include "power.h"
 #include "ota.h"
+#include "configs.h"
 
 void setup()
 {

@@ -3,10 +3,10 @@
 #include "clock.h"
 #include "configs.h"
 
-const uint8_t menuSize = 19;
+const uint8_t menuSize = 20;
 
 void (*menuFunc[menuSize][4])(void) = {
-    /*0*/{[]{moveMenu(14);},[]{moveMenu(16);},[]{returnTime(); returnDate(); moveMenu(1);}, []{displayMenu("Settings", "/power.bmp", "/settings.bmp", "/clock.bmp");}},
+    /*0*/{[]{moveMenu(14);},[]{moveMenu(19);},[]{returnTime(); returnDate(); moveMenu(1);}, []{displayMenu("Settings", "/power.bmp", "/settings.bmp", "/clock.bmp");}},
 
     /*1*/{[]{moveMenu(2);},[]{moveMenu(4);},[]{returnTime(); returnDate(); moveMenu(5);}, []{displayMenu("Set Time", "/back.bmp", "/clock.bmp", "/calendar.bmp");}},
     /*2*/{[]{moveMenu(3);},[]{moveMenu(1);},[]{returnTime(); returnDate(); moveMenu(9);}, []{displayMenu("Set date", "/clock.bmp", "/calendar.bmp", "/sleep.bmp");}},
@@ -25,12 +25,13 @@ void (*menuFunc[menuSize][4])(void) = {
 
     /*13*/{[]{setScreenTimeOut(1);callFunc(3);},[]{setScreenTimeOut(-1);callFunc(3);},[]{saveConfig("screenTimeout", getScreenTimeOut());moveMenu(3);}, []{displayMenu("Timeout " + getScreenTimeOut() + "s", "", "/sleep.bmp", "");}},
 
-    /*14*/{[]{moveMenu(15);},[]{moveMenu(0);},[]{moveMenu(18);}, []{displayMenu("Time", "/settings.bmp", "/clock.bmp", "/calendar.bmp");}},
-    /*15*/{[]{moveMenu(16);},[]{moveMenu(14);},[]{moveMenu(17);}, []{displayMenu("Calendar", "/clock.bmp", "/calendar.bmp", "/power.bmp");}},
+    /*14*/{[]{moveMenu(16);},[]{moveMenu(0);},[]{moveMenu(15);}, []{displayMenu("Time", "/settings.bmp", "/clock.bmp", "/calendar.bmp");}},
+    /*15*/{[]{},[]{},[]{clearScreen();displayMenu("", "", "", "");moveMenu(14);}, []{showTime();}},
 
-    /*16*/{[]{moveMenu(0);},[]{moveMenu(15);},[]{turnOff();}, []{displayMenu("Sleep", "/calendar.bmp", "/power.bmp", "/settings.bmp");}},
-
+    /*16*/{[]{moveMenu(18);},[]{moveMenu(14);},[]{moveMenu(17);}, []{displayMenu("Calendar", "/clock.bmp", "/calendar.bmp", "/power.bmp");}},
     /*17*/{[]{showCalendar(1);},[]{showCalendar(-1);},[]{clearScreen();displayMenu("", "", "", "");moveMenu(15);}, []{showCalendar(0);}},
-    /*18*/{[]{},[]{},[]{clearScreen();displayMenu("", "", "", "");moveMenu(14);}, []{showTime();}},
 
+    /*18*/{[]{moveMenu(19);},[]{moveMenu(16);},[]{saveConfig("ota", getConfig("ota") == "1" ? "0" : "1");ESP.restart();}, []{displayMenu(getConfig("ota") == "1" ? "Over the air" : "Wired", "/calendar.bmp", "/ota.bmp", "/power.bmp");}},
+
+    /*19*/{[]{moveMenu(0);},[]{moveMenu(18);},[]{turnOff();}, []{displayMenu("Sleep", "/ota.bmp", "/power.bmp", "/settings.bmp");}},
 };
