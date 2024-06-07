@@ -29,3 +29,4 @@ void moveMenu(uint8_t nivel);
 void callFunc(uint8_t i);
 void drawImage(char *arquivo, int16_t x, int16_t y);
 void clearScreen();
+void wellcome();

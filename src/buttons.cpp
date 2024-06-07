@@ -11,7 +11,7 @@ struct BTN
     void click(void (*callback)())
     {
         uint8_t valor = touchRead(pin);
-
+        // Serial.println(valor);
         bool state = (valor < THRESHOLD && valor > 0);
         int nowTime = millis();
         if (!state && state != lastState && (nowTime - lastTime > 500))

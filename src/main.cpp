@@ -8,10 +8,6 @@
 
 void setup()
 {
-#ifdef SERIAL_ENABLED
-  Serial.begin(115200);
-#endif
-
   wakeUpReason();
 }
 

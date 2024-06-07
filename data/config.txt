@@ -1,4 +1,4 @@
-screenTimeout:10
+screenTimeout:60
 ssid:foo
 passwd:bar
-ota:1
+ota:0

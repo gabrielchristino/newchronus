@@ -15,11 +15,18 @@ esp_sleep_wakeup_cause_t wakeup_reason;
 void wakeUpReason()
 {
 
+#ifdef SERIAL_ENABLED
+    Serial.begin(115200);
+#endif
+
     initSPIFFS();
 
     initScreen();
-    
+
+    createAP();
     updateCodeOta();
+
+    initButtons();
 
     touchPin = esp_sleep_get_touchpad_wakeup_status();
 
@@ -27,19 +34,22 @@ void wakeUpReason()
     switch (wakeup_reason)
     {
     case ESP_SLEEP_WAKEUP_TIMER:
-        // Serial.println("Wakeup caused by timer");
+#ifdef SERIAL_ENABLED
+        Serial.println("Wakeup caused by timer");
+#endif
         break;
     case ESP_SLEEP_WAKEUP_TOUCHPAD:
-        // Serial.print("Wakeup caused by touchpad");
-        // Serial.println(touchPin);
+#ifdef SERIAL_ENABLED
+        Serial.print("Wakeup caused by touchpad");
+        Serial.println(touchPin);
+#endif
         if (touchPin == 0 /*ok*/)
         {
-            showTime();
+            moveMenu(16);
             break;
         }
         if (touchPin == 5 /*down*/ || touchPin == 9 /*up*/)
         {
-            initButtons();
             clearScreen();
             moveMenu(0);
             break;
@@ -47,7 +57,14 @@ void wakeUpReason()
     default:
         setTimeDate();
         setSleepMode();
-        turnOff();
+        if (getConfig("ota") == "1")
+        {
+            resetTimer();
+        }
+        else
+        {
+            turnOff();
+        }
         break;
     }
 }
@@ -58,13 +75,14 @@ void setSleepMode()
     touchSleepWakeUpEnable(12, THRESHOLD);
     touchSleepWakeUpEnable(32, THRESHOLD);
 
-    esp_sleep_enable_timer_wakeup(TIME_TO_SLEEP * uS_TO_S_FACTOR);
+    // esp_sleep_enable_timer_wakeup(TIME_TO_SLEEP * uS_TO_S_FACTOR);
 }
 
 void goToSleep()
 {
-    #ifdef SERIAL_ENABLED
-        Serial.println("bye");
-    #endif
+#ifdef SERIAL_ENABLED
+    Serial.println("bye");
+#endif
     esp_deep_sleep_start();
+    // esp_light_sleep_start();
 }

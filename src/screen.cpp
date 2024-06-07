@@ -77,8 +77,9 @@ String getScreenTimeOut()
 
 void screenTimeOut()
 {
+    int tempoTela = getScreenTimeOut().toInt();
     unsigned long currentMillis = millis();
-    if (currentMillis - previousMillis >= getScreenTimeOut().toInt() * 1000)
+    if (tempoTela != 0 && currentMillis - previousMillis >= tempoTela * 1000)
     {
         turnOff();
         previousMillis = currentMillis;
@@ -221,4 +222,11 @@ void showCalendar(uint8_t mover)
     }
 
     tft.enableDisplay(true);
+}
+
+void wellcome()
+{
+    clearScreen();
+    tft.setTextColor(0x73ad);
+    drawImage("/logo.bmp", 40, 0);
 }
