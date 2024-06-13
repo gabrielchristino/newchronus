@@ -43,7 +43,7 @@ void showTime()
     tft.setTextColor(0xef5d);
     tft.setFont(&FreeSans24pt7b);
     tft.setTextWrap(true);
-    drawImage("/fundo.bmp", 0, 0);
+    // drawImage("/fundo.bmp", 0, 0);
     int16_t x1, y1;
     uint16_t w, h;
     tft.getTextBounds(returnTime(), 0, 0, &x1, &y1, &w, &h); // Calculate w/h of text
@@ -58,6 +58,10 @@ void showTime()
     y = (80 - h + 5);
     tft.setCursor(x, y);
     tft.println(returnDate());
+
+    double moonPhase = calculateMoonPhase(getAno().toInt(), getMes().toInt(), getDia().toInt());
+    drawMoonPhase(moonPhase);
+
     tft.enableDisplay(true);
 }
 
@@ -66,8 +70,8 @@ void setScreenTimeOut(int8_t valor)
     screenTimeValue += valor;
     if (screenTimeValue < 5)
         screenTimeValue = 5;
-    if (screenTimeValue > 60)
-        screenTimeValue = 60;
+    if (screenTimeValue > 255)
+        screenTimeValue = 255;
 }
 
 String getScreenTimeOut()
@@ -190,8 +194,15 @@ void showCalendar(uint8_t mover)
         anoSelecionado -= 1;
     }
     clearScreen();
+    String listaMeses[12] = {"JAN", "FEB", "MAR", "APR", "MAY", "JUN", "JUL", "AUG", "SEP", "OCT", "NOV", "DEC"};
     tft.setTextColor(ST7735_BLACK);
     tft.setFont(&FreeMono9pt7b);
+
+    tft.setCursor(64, 40);
+    tft.print(listaMeses[mesSelecionado - 1]);
+
+    delay(1000);
+    tft.fillRect(64, 31, 32, 10, 0xf79b);
 
     int x = 4;
     int y = 13;
@@ -209,7 +220,7 @@ void showCalendar(uint8_t mover)
     for (int i = 1; i <= diasNoMes(mesSelecionado, getAno().toInt()); i++)
     {
         tft.setTextColor(0x73ad);
-        if (i == getDia().toInt())
+        if (i == getDia().toInt() && mesSelecionado == getMes().toInt())
             tft.setTextColor(0xec10);
         tft.setCursor(i < 10 ? x + 5 : x, y); // adjust for single digit days
         tft.print(i);
@@ -229,4 +240,52 @@ void wellcome()
     clearScreen();
     tft.setTextColor(0x73ad);
     drawImage("/logo.bmp", 40, 0);
+}
+
+void drawMoonPhase(double phase)
+{
+    uint8_t x = 25;
+    uint8_t y = 25;
+    uint8_t r = 10;
+    tft.fillCircle(x, y, r, ST77XX_BLACK);
+    tft.drawCircle(x, y, r, ST77XX_WHITE);
+
+    /*
+    0 - New Moon
+    1 - Waxing Crescent
+    2 - First Quarter
+    3 - Waxing Gibbous
+    4 - Full Moon
+    5 - Waning Gibbous
+    6 - Last Quarter
+    7 - Waning Crescent
+    ______________________________________________________
+    |    |  0  |  1  |  2  |  3  |  4  |  5  |  6  |  7  |
+    | a1 |  r  |  r  |  r  |  r  |  r  |  0  |-r/2 | -r  |
+    | a2 |  r  | r/2 |  0  |-r/2 | -r  | -r  | -r  | -r  |
+    */
+
+    double a1 = phase <= 4 ? r : -(r / 2) * phase + 3 * r;
+    double a2 = phase >= 4 ? -r : -(r / 2) * phase + r;
+
+    for (double i = a2; i < a1; i++)
+    {
+        drawEllipse(x, y, i, r, ST77XX_WHITE);
+    }
+}
+
+void drawEllipse(int x, int y, int rx, int ry, uint16_t color)
+{
+    int x0 = x - rx;
+    int y0 = y - ry;
+    int x1 = x + rx;
+    int y1 = y + ry;
+
+    for (int i = 90; i < 270; i++)
+    {
+        float a = i * PI / 180.0;
+        int px = x + rx * cos(a);
+        int py = y + ry * sin(a);
+        tft.drawLine(px, py, px, py, color);
+    }
 }

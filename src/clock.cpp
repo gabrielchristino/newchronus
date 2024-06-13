@@ -118,3 +118,22 @@ uint8_t getPrimeiroDiaMes(uint8_t month, uint16_t year)
 
     return (t + 1) % 7;
 }
+
+double calculateMoonPhase(int year, int month, int day)
+{
+    double JD = julianDay(year, month, day);
+    double diff = JD - 2451550.0;
+    double lunarDays = fmod(diff, 29.5305);
+    double phase = (lunarDays / 29.5305) * 8;
+    //   int phase = (int)((lunarDays / 29.5305) * 8) & 7;
+    return phase;
+}
+
+double julianDay(int year, int month, int day)
+{
+    int a = (14 - month) / 12;
+    int y = year + 4800 - a;
+    int m = month + 12 * a - 3;
+    double JD = day + (153 * m + 2) / 5 + y * 365 + y / 4 - y / 100 + y / 400 - 32045;
+    return JD;
+}

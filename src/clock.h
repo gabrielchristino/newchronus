@@ -1,4 +1,5 @@
 #include <ESP32Time.h>
+#include <cmath>
 
 void setTimeDate();
 void setHora(int8_t valor);
@@ -18,3 +19,5 @@ String returnDate();
 int8_t diasNoMes(uint8_t month, uint16_t year);
 uint16_t isBissexto(uint16_t ano);
 uint8_t getPrimeiroDiaMes(uint8_t month, uint16_t year);
+double calculateMoonPhase(int year, int month, int day);
+double julianDay(int year, int month, int day);
