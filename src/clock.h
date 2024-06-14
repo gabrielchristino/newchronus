@@ -14,6 +14,7 @@ void setMes(int8_t valor);
 String getMes();
 void setAno(int8_t valor);
 String getAno();
+String returnString(String format);
 String returnTime();
 String returnDate();
 int8_t diasNoMes(uint8_t month, uint16_t year);

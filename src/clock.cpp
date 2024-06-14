@@ -85,20 +85,27 @@ void setAno(int8_t valor)
 
 String getAno() { return String(ano); }
 
-String returnTime()
+String returnString(String format)
 {
     hora = rtc.getTime("%H").toInt();
     minuto = rtc.getTime("%M").toInt();
     segundo = rtc.getTime("%S").toInt();
-    return rtc.getTime("%R");
+
+    dia = rtc.getTime("%e").toInt();
+    mes = rtc.getTime("%m").toInt();
+    ano = rtc.getTime("%Y").toInt();
+
+    return rtc.getTime(format);
+}
+
+String returnTime()
+{
+    return returnString("%R");
 }
 
 String returnDate()
 {
-    dia = rtc.getTime("%e").toInt();
-    mes = rtc.getTime("%m").toInt();
-    ano = rtc.getTime("%Y").toInt();
-    return rtc.getTime("%a, %e %b");
+    return returnString("%a, %e %b");
 }
 
 uint8_t getPrimeiroDiaMes(uint8_t month, uint16_t year)

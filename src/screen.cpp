@@ -270,18 +270,18 @@ void drawMoonPhase(double phase)
 
     for (double i = a2; i < a1; i++)
     {
-        drawEllipse(x, y, i, r, ST77XX_WHITE);
+        drawEllipse(x, y, i, r, ST77XX_WHITE, 90, 270);
     }
 }
 
-void drawEllipse(int x, int y, int rx, int ry, uint16_t color)
+void drawEllipse(int x, int y, int rx, int ry, uint16_t color, uint16_t start = 90, uint16_t end = 270)
 {
     int x0 = x - rx;
     int y0 = y - ry;
     int x1 = x + rx;
     int y1 = y + ry;
 
-    for (int i = 90; i < 270; i++)
+    for (int i = start; i < end; i++)
     {
         float a = i * PI / 180.0;
         int px = x + rx * cos(a);
