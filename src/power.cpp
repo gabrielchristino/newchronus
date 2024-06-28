@@ -7,7 +7,7 @@
 
 #define uS_TO_S_FACTOR 1000000ULL  /* Conversion factor for micro seconds to seconds */
 #define TIME_TO_SLEEP 60 * 60 * 24 /* Time ESP32 will go to sleep (in seconds) */
-#define THRESHOLD 30
+#define THRESHOLD 60
 
 touch_pad_t touchPin;
 esp_sleep_wakeup_cause_t wakeup_reason;
@@ -31,6 +31,8 @@ void wakeUpReason()
     touchPin = esp_sleep_get_touchpad_wakeup_status();
 
     wakeup_reason = esp_sleep_get_wakeup_cause();
+    Serial.print("wake ");
+    Serial.println(wakeup_reason);
     switch (wakeup_reason)
     {
     case ESP_SLEEP_WAKEUP_TIMER:
@@ -43,12 +45,12 @@ void wakeUpReason()
         Serial.print("Wakeup caused by touchpad");
         Serial.println(touchPin);
 #endif
-        if (touchPin == 0 /*ok*/)
+        if (touchPin == 6 /*ok*/)
         {
             moveMenu(16);
             break;
         }
-        if (touchPin == 5 /*down*/ || touchPin == 9 /*up*/)
+        if (touchPin == 5 /*down*/ || touchPin == 7 /*up*/)
         {
             clearScreen();
             moveMenu(0);
@@ -57,12 +59,16 @@ void wakeUpReason()
     default:
         setTimeDate();
         setSleepMode();
+        Serial.println(getConfig("ota"));
         if (getConfig("ota") == "1")
         {
+            Serial.println("on");
             resetTimer();
         }
         else
         {
+            //moveMenu(0);
+            Serial.println("off");
             turnOff();
         }
         break;
@@ -71,9 +77,9 @@ void wakeUpReason()
 
 void setSleepMode()
 {
-    touchSleepWakeUpEnable(4, THRESHOLD);
     touchSleepWakeUpEnable(12, THRESHOLD);
-    touchSleepWakeUpEnable(32, THRESHOLD);
+    touchSleepWakeUpEnable(14, THRESHOLD);
+    touchSleepWakeUpEnable(27, THRESHOLD);
 
     // esp_sleep_enable_timer_wakeup(TIME_TO_SLEEP * uS_TO_S_FACTOR);
 }
@@ -84,5 +90,5 @@ void goToSleep()
     Serial.println("bye");
 #endif
     esp_deep_sleep_start();
-    // esp_light_sleep_start();
+    esp_light_sleep_start();
 }

@@ -1,0 +1,4 @@
+io0 - dtr
+tx - rx
+rx - tx
+en - rts

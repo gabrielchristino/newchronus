@@ -2,7 +2,7 @@
 #include "driver/touch_sensor.h"
 #include <Arduino.h>
 
-#define THRESHOLD 40
+#define THRESHOLD 60
 
 void initButtons();
 void readButtons();

@@ -23,8 +23,8 @@ uint8_t anoSelecionado = getAno().toInt();
 
 void initScreen()
 {
-    pinMode(5, OUTPUT);
-    digitalWrite(5, HIGH); // liga tela
+    pinMode(4, OUTPUT);
+    digitalWrite(4, HIGH); // liga tela
 
     tft.setSPISpeed(40000000);
     tft.initR(INITR_MINI160x80_PLUGIN); // Init ST7735S mini display
@@ -105,7 +105,7 @@ void turnOff()
 {
     tft.enableDisplay(false);
     tft.fillScreen(ST77XX_BLACK);
-    digitalWrite(5, LOW);
+    digitalWrite(4, LOW);
     setSleepMode();
     goToSleep();
 }
@@ -288,4 +288,13 @@ void drawEllipse(int x, int y, int rx, int ry, uint16_t color, uint16_t start = 
         int py = y + ry * sin(a);
         tft.drawLine(px, py, px, py, color);
     }
+}
+
+void drawDebug(String texto)
+{
+    tft.setCursor(10, 10);
+    tft.fillRect(0,0,60,30, ST77XX_BLACK);
+    tft.setTextColor(ST77XX_WHITE);
+    tft.setTextSize(1);
+    tft.println(texto);
 }
