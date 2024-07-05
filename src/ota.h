@@ -1,5 +1,8 @@
 #include <WiFi.h>
-#include "HttpsOTAUpdate.h"
+#include <HTTPClient.h>
+#include <SPIFFS.h>
+
+#include "Update.h"
 
 // Define WiFi credentials
 #define ssid "iPhone"
