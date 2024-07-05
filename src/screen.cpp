@@ -238,8 +238,7 @@ void showCalendar(uint8_t mover)
 void waitScreen()
 {
     clearScreen();
-    tft.setTextColor(0x73ad);
-    drawImage("/ota.bmp", 58, 5);
+    displayMenu("please, wait...", "", "/ota.bmp", "");
 }
 
 void wellcome()
