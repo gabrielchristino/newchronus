@@ -239,7 +239,7 @@ void waitScreen()
 {
     clearScreen();
     tft.setTextColor(0x73ad);
-    drawImage("/ota.bmp", 40, 0);
+    drawImage("/ota.bmp", 58, 5);
 }
 
 void wellcome()
