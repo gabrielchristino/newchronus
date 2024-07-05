@@ -4,8 +4,8 @@
 #include <WiFiClientSecure.h>
 
 // Define WiFi credentials
-#define ssid "SSID"
-#define password "PASSWORD"
+#define ssid "iPhone"
+#define password "mmmm0000"
 
 // Define server details and file path
 #define HOST "raw.githubusercontent.com"
