@@ -235,6 +235,13 @@ void showCalendar(uint8_t mover)
     tft.enableDisplay(true);
 }
 
+void waitScreen()
+{
+    clearScreen();
+    tft.setTextColor(0x73ad);
+    drawImage("/ota.bmp", 40, 0);
+}
+
 void wellcome()
 {
     clearScreen();

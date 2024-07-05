@@ -29,6 +29,7 @@ void moveMenu(uint8_t nivel);
 void callFunc(uint8_t i);
 void drawImage(char *arquivo, int16_t x, int16_t y);
 void clearScreen();
+void waitScreen();
 void wellcome();
 void drawMoonPhase(double phase);
 void drawEllipse(int x, int y, int rx, int ry, uint16_t color, uint16_t start, uint16_t end);
