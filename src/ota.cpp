@@ -80,6 +80,7 @@ void updateCodeOta()
         {
           size_t bytesRead = client.readBytes(buffer, bufferSize);
           file.write(buffer, bytesRead); // Write data to file
+          Serial.println("Wait...");
         }
       }
       file.close();  // Close the file
