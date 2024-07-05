@@ -21,6 +21,7 @@ void updateCodeOta()
 {
   if (getConfig("ota") == "1")
   {
+    SPIFFS.remove("/firmware.bin");
     HTTPClient http;
     http.begin(PATH);
     int httpCode = http.GET();
@@ -52,7 +53,6 @@ void updateCodeOta()
 
       if (!Update.begin(fileSize))
       {
-
         Serial.println("Cannot do the update");
         return;
       };
@@ -61,18 +61,16 @@ void updateCodeOta()
 
       if (Update.end())
       {
-
         Serial.println("Successful update");
       }
       else
       {
-
         Serial.println("Error Occurred: " + String(Update.getError()));
         return;
       }
 
       file.close();
-
+      
       Serial.println("Reset in 4 seconds...");
       delay(4000);
 
