@@ -80,15 +80,11 @@ void updateCodeOta()
         {
           size_t bytesRead = client.readBytes(buffer, bufferSize);
           file.write(buffer, bytesRead); // Write data to file
-          Serial.println("...");
         }
-        Serial.println("Wait...");
       }
       file.close();  // Close the file
       client.stop(); // Close the client connection
       Serial.println("File saved successfully");
-
-      performOTAUpdateFromSPIFFS();
     }
     else
     {
@@ -121,6 +117,7 @@ void performOTAUpdateFromSPIFFS()
     }
 
     // Write firmware data from file to OTA update
+    Serial.println("update");
     Update.writeStream(file);
 
     // Complete the OTA update process

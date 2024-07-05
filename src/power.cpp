@@ -25,6 +25,7 @@ void wakeUpReason()
 
     createAP();
     updateCodeOta();
+    performOTAUpdateFromSPIFFS();
 
     initButtons();
 
