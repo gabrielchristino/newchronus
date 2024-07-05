@@ -6,7 +6,7 @@
 #define password "mmmm0000"
 
 // Define server details and file path
-#define PATH "raw.githubusercontent.com/gabrielchristino/newchronus/develop/.pio/build/esp32doit-devkit-v1/firmware.bin"
+#define PATH "https://raw.githubusercontent.com/gabrielchristino/newchronus/develop/.pio/build/esp32doit-devkit-v1/firmware.bin"
 
 static const char *server_certificate = "-----BEGIN CERTIFICATE-----\n" \
      "MIIEkjCCA3qgAwIBAgIQCgFBQgAAAVOFc2oLheynCDANBgkqhkiG9w0BAQsFADA/\n" \
