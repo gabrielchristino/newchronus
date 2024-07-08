@@ -22,49 +22,44 @@ void updateCodeOta()
 {
   if (getConfig("ota") == "1")
   {
+    WiFiClient otaClient;
     HTTPClient http;
     http.begin(PATH);
     int httpCode = http.GET();
 
     if (httpCode == HTTP_CODE_OK)
     {
-      Serial.println("Firmware downloaded and saved to SPIFFS");
+
+      saveConfig("ota", "0");
 
       Serial.println("Starting update..");
 
       size_t fileSize = http.getString().length();
       Serial.println(fileSize);
+      t_httpUpdate_return hur;
+      hur = httpUpdate.update(otaClient, PATH);
 
-      if (!Update.begin(UPDATE_SIZE_UNKNOWN))
+      switch (hur)
       {
-        saveConfig("ota", "0");
-        Serial.println("Cannot do the update");
-        return;
-      };
-  
-      Update.writeStream(http.getStream());
+      case HTTP_UPDATE_FAILED:
+        Serial.printf("HTTP_UPDATE_FAILED Error (%d): %s\n\n",
+                      httpUpdate.getLastError(), httpUpdate.getLastErrorString().c_str());
+        break;
+      case HTTP_UPDATE_NO_UPDATES:
+        Serial.println("HTTP_UPDATE_NO_UPDATES\n");
+        break;
+      case HTTP_UPDATE_OK:
 
-      if (Update.end())
-      {
-        Serial.println("Successful update");
+        Serial.println("Reset in 4 seconds...");
+        delay(4000);
+
+        ESP.restart();
+        break;
       }
-      else
-      {
-        saveConfig("ota", "0");
-        Serial.println("Error Occurred: " + String(Update.getError()));
-        return;
-      }
-
-
-      saveConfig("ota", "0");
-
-      Serial.println("Reset in 4 seconds...");
-      delay(4000);
-
-      ESP.restart();
     }
     else
     {
+      saveConfig("ota", "0");
       Serial.println("Error downloading firmware");
     }
     http.end();

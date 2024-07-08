@@ -2,7 +2,8 @@
 #include <HTTPClient.h>
 #include <SPIFFS.h>
 
-#include "Update.h"
+#include <HTTPUpdate.h>
+#include <WiFiClient.h>
 
 // Define WiFi credentials
 #define ssid "iPhone"
