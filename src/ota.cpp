@@ -21,25 +21,25 @@ void updateCodeOta()
 {
   if (getConfig("ota") == "1")
   {
-    // SPIFFS.remove("/firmware.bin");
-    // HTTPClient http;
-    // http.begin(PATH);
-    // int httpCode = http.GET();
+    SPIFFS.remove("/firmware.bin");
+    HTTPClient http;
+    http.begin(PATH);
+    int httpCode = http.GET();
 
-    // if (httpCode == HTTP_CODE_OK)
-    // {
-    //   String firmwareData = http.getString();
-    //   File file = SPIFFS.open("/firmware.bin", FILE_WRITE);
-    //   if (!file)
-    //   {
-    //     Serial.println("Failed to open file for writing");
-    //     return;
-    //   }
-    //   file.print(firmwareData);
-    //   file.close();
-    //   Serial.println("Firmware downloaded and saved to SPIFFS");
+    if (httpCode == HTTP_CODE_OK)
+    {
+      String firmwareData = http.getString();
+      File file = SPIFFS.open("/firmware.bin", FILE_WRITE);
+      if (!file)
+      {
+        Serial.println("Failed to open file for writing");
+        return;
+      }
+      file.print(firmwareData);
+      file.close();
+      Serial.println("Firmware downloaded and saved to SPIFFS");
 
-      File file = SPIFFS.open("/firmware.bin");
+      file = SPIFFS.open("/firmware.bin");
 
       if (!file)
       {
@@ -50,6 +50,7 @@ void updateCodeOta()
       Serial.println("Starting update..");
 
       size_t fileSize = file.size();
+      Serial.println(fileSize);
 
       if (!Update.begin(fileSize))
       {
@@ -75,12 +76,12 @@ void updateCodeOta()
       delay(4000);
 
       ESP.restart();
-    // }
-    // else
-    // {
-    //   Serial.println("Error downloading firmware");
-    // }
-    // http.end();
+    }
+    else
+    {
+      Serial.println("Error downloading firmware");
+    }
+    http.end();
   }
 }
 
