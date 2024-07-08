@@ -35,6 +35,7 @@ void otaHandle()
     // Or:
     //t_httpUpdate_return ret = httpUpdate.update(client, "server", 80, "/file.bin");
 
+    saveConfig("ota", "0");
     switch (ret) {
       case HTTP_UPDATE_FAILED:
         Serial.printf("HTTP_UPDATE_FAILED Error (%d): %s\n", httpUpdate.getLastError(), httpUpdate.getLastErrorString().c_str());
