@@ -23,19 +23,19 @@ void updateCodeOta()
   if (getConfig("ota") == "1")
   {
     WiFiClient otaClient;
-    HTTPClient http;
-    http.begin(PATH);
-    int httpCode = http.GET();
+    // HTTPClient http;
+    // http.begin(PATH);
+    // int httpCode = http.GET();
 
-    if (httpCode == HTTP_CODE_OK)
-    {
+    // if (httpCode == HTTP_CODE_OK)
+    // {
 
       saveConfig("ota", "0");
 
       Serial.println("Starting update..");
 
-      size_t fileSize = http.getString().length();
-      Serial.println(fileSize);
+      // size_t fileSize = http.getString().length();
+      // Serial.println(fileSize);
       t_httpUpdate_return hur;
       hur = httpUpdate.update(otaClient, PATH);
 
@@ -56,13 +56,13 @@ void updateCodeOta()
         ESP.restart();
         break;
       }
-    }
-    else
-    {
-      saveConfig("ota", "0");
-      Serial.println("Error downloading firmware");
-    }
-    http.end();
+    // }
+    // else
+    // {
+    //   saveConfig("ota", "0");
+    //   Serial.println("Error downloading firmware");
+    // }
+    // http.end();
   }
 }
 
