@@ -62,7 +62,7 @@ void updateCodeOta()
       size_t fileSize = file.size();
       Serial.println(fileSize);
 
-      if (!Update.begin(fileSize))
+      if (!Update.begin(UPDATE_SIZE_UNKNOWN))
       {
         saveConfig("ota", "0");
         Serial.println("Cannot do the update");
