@@ -36,10 +36,10 @@ void updateCodeOta()
         return;
       }
       file.print(firmwareData);
-      file.close();
+      // file.close();
       Serial.println("Firmware downloaded and saved to SPIFFS");
 
-      file = SPIFFS.open("/firmware.bin");
+      // file = SPIFFS.open("/firmware.bin");
 
       if (!file)
       {
