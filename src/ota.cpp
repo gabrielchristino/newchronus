@@ -41,6 +41,7 @@ void updateCodeOta()
       file = SPIFFS.open("/firmware.bin", FILE_WRITE);
       if (!file)
       {
+        SPIFFS.remove("/firmware.bin");
         Serial.println("Failed to open file for writing");
         return;
       }
@@ -75,6 +76,7 @@ void updateCodeOta()
 
       if (Update.end())
       {
+        SPIFFS.remove("/firmware.bin");
         Serial.println("Successful update");
       }
       else
