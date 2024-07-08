@@ -26,28 +26,48 @@ void updateCodeOta()
   }
 }
 
+void update_started() {
+  Serial.println("CALLBACK:  HTTP update process started");
+}
+
+void update_finished() {
+  Serial.println("CALLBACK:  HTTP update process finished");
+}
+
+void update_progress(int cur, int total) {
+  Serial.printf("CALLBACK:  HTTP update process at %d of %d bytes...\n", cur, total);
+}
+
+void update_error(int err) {
+  Serial.printf("CALLBACK:  HTTP update fatal error code %d\n", err);
+}
+
 void otaHandle()
 {
   if (getConfig("ota") == "1")
   {
+    Serial.println("Update SPIFFS...");
+
     WiFiClient client;
-    t_httpUpdate_return ret = httpUpdate.update(client, PATH);
-    // Or:
-    //t_httpUpdate_return ret = httpUpdate.update(client, "server", 80, "/file.bin");
 
-    saveConfig("ota", "0");
-    switch (ret) {
-      case HTTP_UPDATE_FAILED:
-        Serial.printf("HTTP_UPDATE_FAILED Error (%d): %s\n", httpUpdate.getLastError(), httpUpdate.getLastErrorString().c_str());
-        break;
+    t_httpUpdate_return ret = httpUpdate.updateSpiffs(client, PATH_SPIFFS);
+    if (ret == HTTP_UPDATE_OK) {
+      Serial.println("Update sketch...");
+      ret = httpUpdate.update(client,  PATH_FIRMWARE);
 
-      case HTTP_UPDATE_NO_UPDATES:
-        Serial.println("HTTP_UPDATE_NO_UPDATES");
-        break;
+      switch (ret) {
+        case HTTP_UPDATE_FAILED:
+          Serial.printf("HTTP_UPDATE_FAILED Error (%d): %s", httpUpdate.getLastError(), httpUpdate.getLastErrorString().c_str());
+          break;
 
-      case HTTP_UPDATE_OK:
-        Serial.println("HTTP_UPDATE_OK");
-        break;
+        case HTTP_UPDATE_NO_UPDATES:
+          Serial.println("HTTP_UPDATE_NO_UPDATES");
+          break;
+
+        case HTTP_UPDATE_OK:
+          Serial.println("HTTP_UPDATE_OK");
+          break;
+      }
     }
   }
 }
