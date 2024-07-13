@@ -7,5 +7,7 @@
 void initSPIFFS();
 String searchForKey(File file, String key);
 String getConfig(String key);
+String getWifi(String key);
+String returnConfig(File file, String key);
 void replaceLine(File file, String startOfLine, String newLine);
 void saveConfig(String key, String value);

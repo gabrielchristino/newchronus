@@ -1,5 +1,6 @@
 #include <configs.h>
 #define CONFIG_FILE "/config.txt"
+#define CONFIG_FILE_WIFI "/config_wifi.txt"
 
 void initSPIFFS()
 {
@@ -24,6 +25,17 @@ String searchForKey(File file, String key)
 String getConfig(String key)
 {
   File file = SPIFFS.open(CONFIG_FILE, FILE_READ);
+  return returnConfig(file, key);
+}
+
+String getWifi(String key)
+{
+  File file = SPIFFS.open(CONFIG_FILE_WIFI, FILE_READ);
+  return returnConfig(file, key);
+}
+
+String returnConfig(File file, String key)
+{
   String configData = searchForKey(file, key);
   file.close();
   return configData;
