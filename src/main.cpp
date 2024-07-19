@@ -14,6 +14,7 @@ void setup()
 void loop()
 {
   readButtons();
-  screenTimeOut();
   otaHandle();
+  if(getConfig("ota") == "1") return;
+  screenTimeOut();
 }
