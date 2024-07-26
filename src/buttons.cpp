@@ -10,9 +10,16 @@ struct BTN
     int lastTime;
     void click(void (*callback)())
     {
-        uint8_t valor = touchRead(pin);
+        uint8_t valor = 0;
         // Serial.println(valor);
         // if(pin == 12) drawDebug(String(valor));
+        for (int i = 0; i < MEDIA_LEITURA; i++)
+        {
+            valor += touchRead(pin);
+        }
+
+        valor = valor / MEDIA_LEITURA;
+
         bool state = (valor < THRESHOLD && valor > 0);
         int nowTime = millis();
         if (!state && state != lastState && (nowTime - lastTime > 500))
@@ -32,7 +39,7 @@ void initButtons()
 {
     btnUp.pin = 27;   // T7;
     btnDown.pin = 12; // T5;
-    btnOk.pin = 14;    // T6;
+    btnOk.pin = 14;   // T6;
 }
 
 void readButtons()

@@ -1,7 +1,7 @@
-io0 - dtr
-tx - rx
-rx - tx
-en - rts
+io0 - dtr - branco
+tx - rx - amarelo
+rx - tx - roxo
+en - rts - azul
 
 https://rgbcolorpicker.com/565
 
